@@ -1,19 +1,20 @@
+
 const products = [
   {
     id: 1,
-    name: "Wireless Headphones",
-    price: 99.99,
+    name: "One shot",
+    price: "1.370.000",
     image:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&h=500&fit=crop",
+      "/photo_2026-08-01_09-06-03.jpg",
     description:
-      "Premium wireless headphones with noise cancellation and 30-hour battery life. Perfect for music lovers and professionals.",
+      "Chochoq turgizadi",
   },
   {
     id: 2,
     name: "Smart Watch",
     price: 249.99,
     image:
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=500&fit=crop",
+      "/choy.jpg",
     description:
       "Feature-rich smartwatch with fitness tracking, heart rate monitor, and smartphone notifications. Water-resistant design.",
   },
@@ -22,7 +23,7 @@ const products = [
     name: "Laptop Stand",
     price: 49.99,
     image:
-      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&h=500&fit=crop",
+      "/krem.jpg",
     description:
       "Ergonomic aluminum laptop stand that improves posture and workspace organization. Adjustable height and angle.",
   },
