@@ -1,80 +1,93 @@
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-
+import { useCart } from "../context/CartContext";
 
 export default function Checkout() {
-  const [mode, setMode] = useState("signup");
+  const {
+    getCartItemsWithProducts,
+    updateQuantity,
+    removeFromCart,
+    getCartTotal,
+    clearCart,
+  } = useCart();
+  const cartItems = getCartItemsWithProducts();
 
-  const { register, handleSubmit, formState: { errors }, } = useForm();
+  const total = getCartTotal();
 
-  function onSubmit() {
-    alert("signed up")
+  function placeOrder() {
+    alert("Successful Order!");
+    clearCart();
   }
-
-
   return (
     <div className="page">
       <div className="container">
-        <div className="auth-container">
-          <h1 className="page-title" >
-            {mode === "signup" ? "Sign Up" : "Login"}
-          </h1>
-          <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
-            <div className="form-group">
-              <label className="form-label" htmlFor="email">
-                Email
-              </label>
-              <input
-                className="form-input"
-                type="email"
-                id="email"
-                {...register("email", { required: "Email is required" })}
-              />
-              {errors.email && (
-                <span className="form-error">{errors.email.message}</span>
-              )}
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="password">
-                Password
-              </label>
-              <input
-                {...register("password",
-                  {
-                    required: "Password is required",
-                    minLength: {
-                      value: 6,
-                      message: "Password must be at least 6 characters",
-                    },
-                    maxLength: {
-                      value: 12,
-                      message: "Password must be less than 12 characters",
-                    },
-                  })}
-                className="form-input"
-                type="password"
-                id="password" />
-              {errors.password && (
-                <span className="form-error">{errors.password.message}</span>
-              )}
-            </div>
+        <h1 className="page-title">Checkout</h1>
+        <div className="checkout-container">
+          <div className="checkout-items">
+            <h2 className="checkout-section-title">Order Summary</h2>
+            {cartItems.map((item) => (
+              <div className="checkout-item" key={item.id}>
+                <img
+                  src={item.product.image}
+                  alt={item.product.name}
+                  className="checkout-item-image"
+                />
+                <div className="checkout-item-details">
+                  <h3 className="checkout-item-name">{item.product.name}</h3>
+                  <p className="checkout-item-price">
+                    ${item.product.price} each
+                  </p>
+                </div>
+                <div className="checkout-item-controls">
+                  <div className="quantity-controls">
+                    <button
+                      className="quantity-btn"
+                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                    >
+                      -
+                    </button>
+                    <span className="quantity-value">{item.quantity}</span>
+                    <button
+                      className="quantity-btn"
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    >
+                      +
+                    </button>
+                  </div>
 
+                  <p className="checkout-item-total">
+                    ${(item.product.price * item.quantity).toFixed(2)}
+                  </p>
+                  <button
+                    className="btn btn-secondary btn-small"
+                    onClick={() => removeFromCart(item.id)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
 
-            <button type="submit" className="btn btn-primary btn-large">
-              {mode === "signup" ? "Sign Up" : "Login"}
-            </button>
-          </form>
-          <div className="auth-switch">
-            {mode === "signup" ? (<p>
-              Already have an account ? <span className="auth-link" onClick={() => setMode("login")}>Login</span>
-            </p>) : (
-              <p>
-                Don't have an account ? <span className="auth-link" onClick={() => setMode("signup")}>Sign Up</span>
+          <div className="checkout-summary">
+            <h2 className="checkout-section-title">Total</h2>
+            <div className="checkout-total">
+              <p className="checkout-total-label">Subtotal:</p>
+              <p className="checkout-total-value">${total.toFixed(2)}</p>
+            </div>
+            <div className="checkout-total">
+              <p className="checkout-total-label">Total:</p>
+              <p className="checkout-total-value checkout-total-final">
+                ${total.toFixed(2)}
               </p>
-            )}
+            </div>
+            <button
+              className="btn btn-primary btn-large btn-block"
+              onClick={placeOrder}
+            >
+              Place Order
+            </button>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
